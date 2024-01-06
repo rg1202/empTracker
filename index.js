@@ -1,11 +1,13 @@
-const {prompt} = require("inquirer");
+const { prompt } = require("inquirer");
 const db = require("./db");
 const menuArt = require("asciiart-logo");
 
 init();
 //ascii art for menu
 function init() {
-	const logo = menuArt({ name: "######### Employee Manager #########" }).render();
+	const logo = menuArt({
+		name: "######### Employee Manager #########",
+	}).render();
 	console.log(logo);
 	loadMainPrompts();
 }
@@ -58,7 +60,7 @@ function loadMainPrompts() {
 					value: "REMOVE_ROLE",
 				},
 				{
-					name: "View All Serivce Lines",
+					name: "View All Service Lines",
 					value: "VIEW_SL",
 				},
 				{
@@ -87,7 +89,7 @@ function loadMainPrompts() {
 				viewEmployees();
 				break;
 			case "VIEW_EMP_BY_SL":
-				viewEmployeesByServiceLine();
+				viewEmployeesByserviceLine();
 				break;
 			case "VIEW_EMP_BY_MAN":
 				viewEmployeesByManager();
@@ -114,13 +116,13 @@ function loadMainPrompts() {
 				removeRole();
 				break;
 			case "VIEW_SL":
-				viewServiceLines();
+				viewserviceLines();
 				break;
 			case "ADD_SL":
-				addServiceLine();
+				addserviceLine();
 				break;
 			case "REMOVE_SL":
-				removeServiceLine();
+				removeserviceLine();
 				break;
 			case "VIEW_UTIL":
 				viewUtilization();
@@ -144,8 +146,8 @@ function viewEmployees() {
 }
 
 //employees by service line
-function viewEmployeesByServiceLine() {
-	db.findAllServiceLines().then(([rows]) => {
+function viewEmployeesByserviceLine() {
+	db.findAllserviceLines().then(([rows]) => {
 		let serviceLines = rows;
 		const serviceLineChoices = serviceLines.map(({ id, name }) => ({
 			name: name,
@@ -157,7 +159,7 @@ function viewEmployeesByServiceLine() {
 			message: "Which Service Line?",
 			choices: serviceLineChoices,
 		})
-			.then((res) => db.findAllEmployeesByServiceLine(res.serviceLineId))
+			.then((res) => db.findAllEmployeesByserviceLine(res.serviceLineId))
 			.then(([rows]) => {
 				let employees = rows;
 				console.log("\n");
@@ -275,8 +277,7 @@ function updateEmployeeManager() {
 				prompt({
 					type: "list",
 					name: "managerId",
-					message:
-						"Select Manager?",
+					message: "Select Manager?",
 					choices: managerChoices,
 				})
 					.then((res) => db.updateEmployeeManager(employeeId, res.managerId))
@@ -300,7 +301,7 @@ function viewRoles() {
 
 //add role
 function addRole() {
-	db.findAllServiceLines().then(([rows]) => {
+	db.findAllserviceLines().then(([rows]) => {
 		let serviceLines = rows;
 		const serviceLineChoices = serviceLines.map(({ id, name }) => ({
 			name: name,
@@ -340,8 +341,7 @@ function removeRole() {
 		prompt({
 			type: "list",
 			name: "roleId",
-			message:
-				"Remove which Role? (Warning: employees will be removed)",
+			message: "Remove which Role? (Warning: employees will be removed)",
 			choices: roleChoices,
 		})
 			.then((res) => db.removeRole(res.roleId))
@@ -351,8 +351,8 @@ function removeRole() {
 }
 
 //service lines
-function viewServiceLines() {
-	db.findAllServiceLines()
+function viewserviceLines() {
+	db.findAllserviceLines()
 		.then(([rows]) => {
 			let serviceLines = rows;
 			console.log("\n");
@@ -362,21 +362,21 @@ function viewServiceLines() {
 }
 
 //add service line
-function addServiceLine() {
+function addserviceLine() {
 	prompt({
 		name: "name",
 		message: "Name?",
 	}).then((res) => {
 		let name = res;
-		db.createServiceLine(name)
+		db.createserviceLine(name)
 			.then(() => console.log(`${name.name} added!`))
 			.then(() => loadMainPrompts());
 	});
 }
 
 //delete service line
-function removeServiceLine() {
-	db.findAllServiceLines().then(([rows]) => {
+function removeserviceLine() {
+	db.findAllserviceLines().then(([rows]) => {
 		let serviceLines = rows;
 		const serviceLineChoices = serviceLines.map(({ id, name }) => ({
 			name: name,
@@ -385,11 +385,10 @@ function removeServiceLine() {
 		prompt({
 			type: "list",
 			name: "serviceLineId",
-			message:
-				"Remove which SL? (Warning: employees will be removed)",
+			message: "Remove which SL? (Warning: employees will be removed)",
 			choices: serviceLineChoices,
 		})
-			.then((res) => db.removeServiceLine(res.serviceLineId))
+			.then((res) => db.removeserviceLine(res.serviceLineId))
 			.then(() => console.log("Service Line Removed!"))
 			.then(() => loadMainPrompts());
 	});
@@ -461,9 +460,7 @@ function addEmployee() {
 
 							db.createEmployee(employee);
 						})
-						.then(() =>
-							console.log(`${firstName} ${lastName} has been added`)
-						)
+						.then(() => console.log(`${firstName} ${lastName} has been added`))
 						.then(() => loadMainPrompts());
 				});
 			});

@@ -3,7 +3,7 @@ CREATE DATABASE employees;
 
 USE employees;
 
-CREAT TABLE serviceLine(
+CREATE TABLE serviceLine(
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(30) UNIQUE NOT NULL
 );
@@ -14,7 +14,7 @@ CREATE TABLE role (
   salary DECIMAL UNSIGNED NOT NULL,
   serviceLine_id INT UNSIGNED NOT NULL,
   INDEX dep_ind (serviceLine_id),
-  CONSTRAINT fk_department FOREIGN KEY (serviceLine_id) REFERENCES serviceLine(id) ON DELETE CASCADE
+  CONSTRAINT fk_serviceLine FOREIGN KEY (serviceLine_id) REFERENCES serviceLine(id) ON DELETE CASCADE
 );
 
 CREATE TABLE employee (
